@@ -4,18 +4,12 @@
 # CptS 434 - Assignment 1
 # Due 2019-09-05
 
-# Python Tutorial:      https://docs.python.org/3.7/tutorial/index.html
-# Python Documentation: https://docs.python.org/3.7/index.html
-
 import pandas as pd
 import numpy as np
 
-def linearRegression(
-    predictors = ['Sugars', 'Fiber'], 
-    target = 'Rating', 
-    emptyCellHandling = 'zero',
-    outputPrecision = 2, 
-    dataPath = 'data/Cereals.csv'):
+def linearRegression(target, predictors, dataPath, 
+    emptyCellHandling = 'drop', 
+    outputPrecision = 2):
 
     print('='*12 + ' Linear Regression ' + '='*12)
     print("Target: {}".format(target))
@@ -90,15 +84,3 @@ def linearRegression(
     print("s = {}".format(round(s, outputPrecision)))
 
     return r2, s
-
-    # Write a code for regression of nutritional rating vs sugar and fiber. 
-    # Train with example from Cereals dataset on class web page.
-    # Report bias and slopes for predictors sugar and fiber,
-    # coefficient of determination, R2, and standard error of estimation, s.
-
-
-
-
-    # Consider protein, fat, and sodium separately as a third attribute, 
-    # in addition to sugar and fiber, to predict the nutritional rating cereals.
-    # Report the change in R2 and s relative to sugar and fiber only.
