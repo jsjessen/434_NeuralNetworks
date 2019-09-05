@@ -4,54 +4,101 @@
 # CptS 434 - Assignment 1
 # Due 2019-09-05
 
+# Python Tutorial:      https://docs.python.org/3.7/tutorial/index.html
+# Python Documentation: https://docs.python.org/3.7/index.html
+
 import pandas as pd
 import numpy as np
 
-datafile = 'data/Cereals.csv'
+def linearRegression(
+    predictors = ['Sugars', 'Fiber'], 
+    target = 'Rating', 
+    emptyCellHandling = 'zero',
+    outputPrecision = 2, 
+    dataPath = 'data/Cereals.csv'):
 
-target = 'Rating'
+    print('='*12 + ' Linear Regression ' + '='*12)
+    print("Target: {}".format(target))
+    predictorsString = 'Predictors: '
+    for predictor in predictors:
+        predictorsString += predictor + ' '
+    print(predictorsString)
 
-predictors = ['Sugars','Fiber']
-# predictors.append('Protein')
-# predictors.append('Fat')
-# predictors.append('Sodium')
+    columns = predictors.copy()
+    columns.append(target)
 
-attributes = predictors.copy()
-attributes.append(target)
+    # Read data from file
+    # Read CSV:  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
+    # DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
+    dataFrame = pd.read_csv(dataPath, usecols=columns)
 
-#==============================================================================
+    if emptyCellHandling.lower() == 'zero':
+        print("Empty cells have been set to zero.")
+        dataFrame = dataFrame.fillna(0)
+    elif emptyCellHandling.lower() == 'drop':
+        print("Rows with empty cells have been dropped.")
+        dataFrame = dataFrame.dropna()
+    else:
+        print("Warning: Empty cells not handled.")
 
-# Read data from file
-df = pd.read_csv(datafile, usecols=attributes)
-df = df.fillna(0) # Use 0 for empty cells
-numRows = len(df.index)
-numPredictors = len(predictors)
+    numRows = len(dataFrame.index)
+    numPredictors = len(predictors)
 
-V = np.ones((numRows, 1 + numPredictors)) # First column ones for bias node
-V[:,1:] = df[predictors].values
+    # [[ 1 Sugars0 Fiber0 ]
+    #  [ 1 Sugars1 Fiber1 ]
+    #          ...
+    #  [ 1 SugarsN FiberN ]]
+    X = np.ones((numRows, 1 + numPredictors)) # First column ones for bias node
+    X[:,1:] = dataFrame[predictors].values
 
-y = df[target].values
+    y = dataFrame[target].values
 
-# Sove the normal equation
-A = V.T @ V
-b = V.T @ y
-w = np.linalg.lstsq(A, b, rcond=None)[0] # Solves Aw = b
-b0 = w[0]
-bs = w[1]
-bf = w[2]
+    # Solve the normal equation
+    w = np.linalg.solve(X.T.dot(X), X.T.dot(y))
 
-print("Bias = {}".format(w[0]))
-for i, predictor in enumerate(predictors):
-    print("{0} slope = {1}".format(predictor, w[i]))
+    print('-'*43)
+    print("Bias = {}".format(round(w[0], outputPrecision)))
+    for i, predictor in enumerate(predictors):
+        print("{0} slope = {1}".format(predictor, round(w[1+i], outputPrecision)))
 
-# Write a code for regression of nutritional rating vs sugar and fiber. 
-# Train with example from Cereals dataset on class web page.
-# Report bias and slopes for predictors sugar and fiber,
-# coefficient of determination, R2, and standard error of estimation, s.
+    yFit = X.dot(w)
+    # residuals = yFit - y
+
+    yAvg = np.mean(y)
+
+    # Identity: SST = SSR + SSE
+    # Sum of Squares Regression
+    ssrDiff = yFit - yAvg
+    SSR = np.sum(ssrDiff.dot(ssrDiff))
+    # Sum of Squares Error
+    sseDiff = y - yFit
+    SSE = np.sum(sseDiff.dot(sseDiff))
+    # Sum of Squares Total 
+    sstDiff = y - yAvg
+    SST = np.sum(sstDiff.dot(sstDiff))
+
+    # Coefficient of Determination
+    r2 = SSR / SST
+
+    # Mean Squared Error
+    MSE = SSE / (numRows - numPredictors - 1)
+
+    # Standard Error of Estimation
+    s = np.sqrt(MSE)
+
+    print("R^2 = {}%".format(round(r2 * 100, outputPrecision)))
+    print("s = {}".format(round(s, outputPrecision)))
+
+    return r2, s
+
+    # Write a code for regression of nutritional rating vs sugar and fiber. 
+    # Train with example from Cereals dataset on class web page.
+    # Report bias and slopes for predictors sugar and fiber,
+    # coefficient of determination, R2, and standard error of estimation, s.
 
 
 
 
-# Consider protein, fat, and sodium separately as a third attribute, 
-# in addition to sugar and fiber, to predict the nutritional rating cereals.
-# Report the change in R2 and s relative to sugar and fiber only.
+    # Consider protein, fat, and sodium separately as a third attribute, 
+    # in addition to sugar and fiber, to predict the nutritional rating cereals.
+    # Report the change in R2 and s relative to sugar and fiber only.
