@@ -1,8 +1,8 @@
 Assignment 1, due 9/5/19
 Write a code for regression of nutritional rating vs sugar and fiber. 
 Train with example from Cereals dataset on class web page
-Report bias and slopes for predictors sugar and fiber
-Calculate sum of square residuals, R2, and standard error of estimation, s.
+Report bias and slopes for predictors sugar and fiber,
+coefficient of determination, R2, and standard error of estimation, s.
 
 Consider protein, fat, and sodium separately as a third attribute, 
 in addition to sugar and fiber, to predict the nutritional rating cereals.
