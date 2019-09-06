@@ -60,27 +60,35 @@ def linearRegression(target, predictors, dataPath,
 
     yAvg = np.mean(y)
 
-    # Identity: SST = SSR + SSE
     # Sum of Squares Regression
+    #   Measures variability of fit from mean response.
     ssrDiff = yFit - yAvg
     SSR = np.sum(ssrDiff.dot(ssrDiff))
+
     # Sum of Squares Error
+    #   Measures variability of response from all other sources after the linear relationship 
+    #   between response and attributes has been accounted for.
     sseDiff = y - yFit
     SSE = np.sum(sseDiff.dot(sseDiff))
+
     # Sum of Squares Total 
+    #   Identity: SST = SSR + SSE
     sstDiff = y - yAvg
     SST = np.sum(sstDiff.dot(sstDiff))
 
     # Coefficient of Determination
+    #   Interpreted as the fraction of the total variation of response over 
+    #   the dataset that is explained by the linear fit.
     r2 = SSR / SST
+    # Always increases when an additional attribute is included.
+    # To be useful, a new attribute must significantly increase R2.
 
     # Mean Squared Error
     MSE = SSE / (numRows - numPredictors - 1)
 
     # Standard Error of Estimation
+    #   Interpreted as the typical size of residuals 
     s = np.sqrt(MSE)
-
-    print("R^2 = {}%".format(round(r2 * 100, outputPrecision)))
-    print("s = {}".format(round(s, outputPrecision)))
+    # Can be lower or higher when another attribute is added to the model.
 
     return r2, s

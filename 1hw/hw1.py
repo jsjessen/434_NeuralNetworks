@@ -7,11 +7,14 @@
 # Python Tutorial:      https://docs.python.org/3.7/tutorial/index.html
 # Python Documentation: https://docs.python.org/3.7/index.html
 
+# python 1hw/hw1.py > 1hw/output.txt
+
 from LinearRegression import linearRegression as linReg
 
 dataPath = 'data/Cereals.csv'
 target = 'Rating'
 precision = 2
+emptyMethods = ['zero', 'drop']
 
 # Write a code for regression of nutritional rating vs sugar and fiber. 
 # Train with example from Cereals dataset on class web page
@@ -22,13 +25,23 @@ precision = 2
 # in addition to sugar and fiber, to predict the nutritional rating cereals.
 # Report the change in R2 and s relative to sugar and fiber only.
 
-predictors = ['Sugars']
-r0, s0 = linReg(target, predictors, dataPath, emptyCellHandling='zero', outputPrecision=precision)
+thirdAttributes = ['Protein', 'Fat', 'Sodium']
 
-predictors = ['Sugars', 'Fiber']
-r1, s1 = linReg(target, predictors, dataPath, emptyCellHandling='zero', outputPrecision=precision)
+for emptyMethod in emptyMethods:
+    predictors = ['Sugars', 'Fiber']
+    baseR2, baseS = linReg(target, predictors, dataPath, 
+        emptyCellHandling=emptyMethod, outputPrecision=precision)
+    print("R² = {}%".format(round(baseR2 * 100, precision)))
+    print("s = {}".format(round(baseS, precision)))
+    print('_'*43 + '\n')
+    
+    for thirdAttribute in thirdAttributes:
+        predictors = ['Sugars', 'Fiber']
+        predictors.append(thirdAttribute)
+        r2, s = linReg(target, predictors, dataPath, 
+            emptyCellHandling=emptyMethod, outputPrecision=precision)
+        print("R² = {0}% Δ({1:+}%)".format(round(r2 * 100, precision), round((r2 - baseR2)*100, precision)))
+        print("s = {0} Δ({1:+})".format(round(s, precision), round(s - baseS, precision)))
+        print('_'*43 + '\n')
 
-print("R2:")
-print(r1 - r0)
-print("s:")
-print(s1 - s0)
+    print('\n' + '#'*43 + '\n')
