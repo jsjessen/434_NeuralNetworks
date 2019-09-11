@@ -24,28 +24,31 @@ def linearRegression(target, predictors, dataPath,
     # Read data from file
     # Read CSV:  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
     # DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
-    dataFrame = pd.read_csv(dataPath, usecols=columns)
+    data = pd.read_csv(dataPath, usecols=columns)
+
 
     if emptyCellHandling.lower() == 'zero':
         print("Empty cells have been set to zero.")
-        dataFrame = dataFrame.fillna(0)
+        data = data.fillna(0)
     elif emptyCellHandling.lower() == 'drop':
         print("Rows with empty cells have been dropped.")
-        dataFrame = dataFrame.dropna()
+        data = data.dropna()
     else:
         print("Warning: Empty cells not handled.")
 
-    numRows = len(dataFrame.index)
+    numRows = len(data.index)
     numPredictors = len(predictors)
+
+    dataNorm = (data - data.min()) / (data.max() - data.min())
 
     # [[ 1 Sugars0 Fiber0 ]
     #  [ 1 Sugars1 Fiber1 ]
     #          ...
     #  [ 1 SugarsN FiberN ]]
     X = np.ones((numRows, 1 + numPredictors)) # First column ones for bias node
-    X[:,1:] = dataFrame[predictors].values
+    X[:,1:] = dataNorm[predictors].values
 
-    y = dataFrame[target].values
+    y = dataNorm[target].values
 
     # Solve the normal equation
     w = np.linalg.solve(X.T.dot(X), X.T.dot(y))
@@ -56,8 +59,6 @@ def linearRegression(target, predictors, dataPath,
         print("{0} slope = {1}".format(predictor, round(w[1+i], outputPrecision)))
 
     yFit = X.dot(w)
-    # residuals = yFit - y
-
     yAvg = np.mean(y)
 
     # Sum of Squares Regression
@@ -68,7 +69,7 @@ def linearRegression(target, predictors, dataPath,
     # Sum of Squares Error
     #   Measures variability of response from all other sources after the linear relationship 
     #   between response and attributes has been accounted for.
-    sseDiff = y - yFit
+    sseDiff = y - yFit # residuals
     SSE = np.sum(sseDiff.dot(sseDiff))
 
     # Sum of Squares Total 

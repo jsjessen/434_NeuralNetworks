@@ -17,11 +17,11 @@ Target: Rating
 Predictors: Sugars Fiber 
 Empty cells have been set to zero.
 -------------------------------------------
-Bias = 51.76
-Sugars slope = -2.2
-Fiber slope = 2.87
+Bias = 0.45
+Sugars slope = -0.44
+Fiber slope = 0.53
 R² = 81.2%
-s = 6.17
+s = 0.08
 ___________________________________________
 
 ============ Linear Regression ============
@@ -29,12 +29,12 @@ Target: Rating
 Predictors: Sugars Fiber Protein 
 Empty cells have been set to zero.
 -------------------------------------------
-Bias = 51.64
-Sugars slope = -2.2
-Fiber slope = 2.86
-Protein slope = 0.05
+Bias = 0.44
+Sugars slope = -0.44
+Fiber slope = 0.53
+Protein slope = 0.0
 R² = 81.2% Δ(+0.0%)
-s = 6.21 Δ(+0.04)
+s = 0.08 Δ(+0.0)
 ___________________________________________
 
 ============ Linear Regression ============
@@ -42,12 +42,12 @@ Target: Rating
 Predictors: Sugars Fiber Fat 
 Empty cells have been set to zero.
 -------------------------------------------
-Bias = 53.53
-Sugars slope = -1.98
-Fiber slope = 2.95
-Fat slope = -3.44
+Bias = 0.47
+Sugars slope = -0.39
+Fiber slope = 0.55
+Fat slope = -0.23
 R² = 86.78% Δ(+5.58%)
-s = 5.21 Δ(-0.96)
+s = 0.07 Δ(-0.01)
 ___________________________________________
 
 ============ Linear Regression ============
@@ -55,12 +55,12 @@ Target: Rating
 Predictors: Sugars Fiber Sodium 
 Empty cells have been set to zero.
 -------------------------------------------
-Bias = 59.53
-Sugars slope = -2.12
-Fiber slope = 2.76
-Sodium slope = -0.05
+Bias = 0.55
+Sugars slope = -0.42
+Fiber slope = 0.51
+Sodium slope = -0.22
 R² = 90.33% Δ(+9.13%)
-s = 4.46 Δ(-1.71)
+s = 0.06 Δ(-0.02)
 ___________________________________________
 
 
@@ -71,11 +71,11 @@ Target: Rating
 Predictors: Sugars Fiber 
 Rows with empty cells have been dropped.
 -------------------------------------------
-Bias = 52.17
-Sugars slope = -2.24
-Fiber slope = 2.87
+Bias = 0.45
+Sugars slope = -0.44
+Fiber slope = 0.53
 R² = 81.64%
-s = 6.13
+s = 0.08
 ___________________________________________
 
 ============ Linear Regression ============
@@ -83,12 +83,12 @@ Target: Rating
 Predictors: Sugars Fiber Protein 
 Rows with empty cells have been dropped.
 -------------------------------------------
-Bias = 51.33
-Sugars slope = -2.22
-Fiber slope = 2.79
-Protein slope = 0.35
+Bias = 0.44
+Sugars slope = -0.44
+Fiber slope = 0.52
+Protein slope = 0.02
 R² = 81.69% Δ(+0.05%)
-s = 6.16 Δ(+0.03)
+s = 0.08 Δ(+0.0)
 ___________________________________________
 
 ============ Linear Regression ============
@@ -96,12 +96,12 @@ Target: Rating
 Predictors: Sugars Fiber Fat 
 Rows with empty cells have been dropped.
 -------------------------------------------
-Bias = 53.67
-Sugars slope = -2.0
-Fiber slope = 2.95
-Fat slope = -3.35
+Bias = 0.47
+Sugars slope = -0.4
+Fiber slope = 0.55
+Fat slope = -0.22
 R² = 86.83% Δ(+5.18%)
-s = 5.23 Δ(-0.9)
+s = 0.07 Δ(-0.01)
 ___________________________________________
 
 ============ Linear Regression ============
@@ -109,10 +109,10 @@ Target: Rating
 Predictors: Sugars Fiber Sodium 
 Rows with empty cells have been dropped.
 -------------------------------------------
-Bias = 61.08
-Sugars slope = -2.19
-Fiber slope = 2.75
-Sodium slope = -0.06
+Bias = 0.57
+Sugars slope = -0.43
+Fiber slope = 0.51
+Sodium slope = -0.24
 R² = 92.2% Δ(+10.55%)
-s = 4.02 Δ(-2.1)
+s = 0.05 Δ(-0.03)
 ___________________________________________
