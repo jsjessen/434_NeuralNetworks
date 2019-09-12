@@ -1,0 +1,26 @@
+IB1 instance-based classifier
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances          68               94.4444 %
+Incorrectly Classified Instances         4                5.5556 %
+Kappa statistic                          0.88  
+Mean absolute error                      0.0917
+Root mean squared error                  0.2235
+Relative absolute error                 19.2509 %
+Root relative squared error             45.7979 %
+Total Number of Instances               72     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1.000    0.143    0.917      1.000    0.957      0.886    0.976     0.978     ALL
+                 0.857    0.000    1.000      0.857    0.923      0.886    0.976     0.967     AML
+Weighted Avg.    0.944    0.087    0.949      0.944    0.944      0.886    0.976     0.973     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 44  0 |  a = ALL
+  4 24 |  b = AML
