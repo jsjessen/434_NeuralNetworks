@@ -36,19 +36,19 @@ def perceptronClassification(dataPath, inputColumns, classColumn):
     # Sum of Squares Regression
     #   Measures variability of fit from mean response.
     ssrDiff = fits - yAvg
-    SSR = ssrDiff.dot(ssrDiff)
+    SSR = np.sum(ssrDiff.dot(ssrDiff))
 
     # Sum of Squares Error
     #   Measures variability of response from all other sources after the linear relationship 
     #   between response and attributes has been accounted for.
     residuals = classifications - fits # Deviations predicted from actual empirical values of data
-    SSE = residuals.dot(residuals)
+    SSE = np.sum(residuals.dot(residuals))
 
     # Sum of Squares Total 
     #   The sum of the squared differences of each observation from the overall mean.
     #   Identity: SST = SSR + SSE
     delY = classifications - yAvg
-    SST = delY.dot(delY)
+    SST = np.sum(delY.dot(delY))
 
     # Coefficient of Determination
     #   Interpreted as the fraction of the total variation of response over 
