@@ -7,89 +7,133 @@
 import pandas as pd
 import numpy as np
 
-def perceptronClassification(target, predictors, dataPath, 
+def perceptronClassification(dataPath, inputColumns, classColumn,
+    normalizeInputs = False,
     emptyCellHandling = 'drop', 
     outputPrecision = 2):
 
-    print('='*12 + ' Linear Regression ' + '='*12)
-    print("Target: {}".format(target))
-    predictorsString = 'Predictors: '
-    for predictor in predictors:
-        predictorsString += predictor + ' '
-    print(predictorsString)
+    # print("Input Columns: {}".format(inputColumns))
+    # print("Class Column: {}".format(classColumn))
 
-    columns = predictors.copy()
-    columns.append(target)
+    columns = inputColumns.copy()
+    columns.append(classColumn)
 
     # Read data from file
     # Read CSV:  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
     # DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
     data = pd.read_csv(dataPath, usecols=columns)
 
+    numInputs = len(inputColumns)
+    numRows = len(data.index)
 
     if emptyCellHandling.lower() == 'zero':
         print("Empty cells have been set to zero.")
         data = data.fillna(0)
     elif emptyCellHandling.lower() == 'drop':
-        print("Rows with empty cells have been dropped.")
+        numRowsBefore = numRows
         data = data.dropna()
+        numRows = len(data.index)
+        numRowsDropped = numRowsBefore - numRows
+        if numRowsDropped > 0:
+            print("{} rows with empty cells have been dropped.".format(numRowsDropped))
     else:
         print("Warning: Empty cells not handled.")
 
-    numRows = len(data.index)
-    numPredictors = len(predictors)
+    # Normalize Data
+    if normalizeInputs:
+        # TODO: Prevent class column from being affected
+        data = (data - data.min()) / (data.max() - data.min())
+    else:
+        print("Warning: Not normalizing inputs")
 
-    dataNorm = (data - data.min()) / (data.max() - data.min())
-
-    # [[ 1 Sugars0 Fiber0 ]
-    #  [ 1 Sugars1 Fiber1 ]
-    #          ...
-    #  [ 1 SugarsN FiberN ]]
-    X = np.ones((numRows, 1 + numPredictors)) # First column ones for bias node
-    X[:,1:] = dataNorm[predictors].values
-
-    y = dataNorm[target].values
+    V = np.ones((numRows, 1 + numInputs)) # First column ones for bias node
+    V[:,1:] = data.iloc[:,inputColumns].values
+    
+    classifications = data.iloc[:,classColumn].values
 
     # Solve the normal equation
-    w = np.linalg.solve(X.T.dot(X), X.T.dot(y))
+    w = np.linalg.solve(V.T.dot(V), V.T.dot(classifications))
 
-    print('-'*43)
-    print("Bias = {}".format(round(w[0], outputPrecision)))
-    for i, predictor in enumerate(predictors):
-        print("{0} slope = {1}".format(predictor, round(w[1+i], outputPrecision)))
-
-    yFit = X.dot(w)
-    yAvg = np.mean(y)
+    fit = V.dot(w)
+    yAvg = np.mean(classifications) # AKA yBar
 
     # Sum of Squares Regression
     #   Measures variability of fit from mean response.
-    ssrDiff = yFit - yAvg
-    SSR = np.sum(ssrDiff.dot(ssrDiff))
+    ssrDiff = fit - yAvg
+    SSR = ssrDiff.dot(ssrDiff)
 
     # Sum of Squares Error
     #   Measures variability of response from all other sources after the linear relationship 
     #   between response and attributes has been accounted for.
-    sseDiff = y - yFit # residuals
-    SSE = np.sum(sseDiff.dot(sseDiff))
+    residuals = classifications - fit # Deviations predicted from actual empirical values of data
+    SSE = residuals.dot(residuals)
 
     # Sum of Squares Total 
+    #   The sum of the squared differences of each observation from the overall mean.
     #   Identity: SST = SSR + SSE
-    sstDiff = y - yAvg
-    SST = np.sum(sstDiff.dot(sstDiff))
+    delY = classifications - yAvg
+    SST = delY.dot(delY)
 
     # Coefficient of Determination
     #   Interpreted as the fraction of the total variation of response over 
     #   the dataset that is explained by the linear fit.
-    r2 = SSR / SST
+    rSq = SSR / SST
     # Always increases when an additional attribute is included.
     # To be useful, a new attribute must significantly increase R2.
 
     # Mean Squared Error
-    MSE = SSE / (numRows - numPredictors - 1)
+    MSE = SSE / (numRows - numInputs - 1)
 
     # Standard Error of Estimation
     #   Interpreted as the typical size of residuals 
     s = np.sqrt(MSE)
     # Can be lower or higher when another attribute is added to the model.
 
-    return r2, s
+    classLabels = np.unique(classifications)
+    classLabels = np.sort(classLabels)
+
+    # TODO: Move to hw4.py
+    totalLabel = 'Total'
+    accuracyLabel = 'Accuracy'
+    totals = pd.DataFrame(0, index=[totalLabel, accuracyLabel], columns=classLabels)
+    confusionMatrix = pd.DataFrame(0, index=classLabels, columns=classLabels)
+    for index in data.index:
+        classLabel = classifications[index]
+        totals.loc[totalLabel, classLabel] += 1
+        if fit[index] < 1.5: assignedClass = 1
+        elif fit[index] > 4: assignedClass = 6
+        else: assignedClass = 2
+        confusionMatrix.loc[assignedClass, classLabel] += 1
+    
+    totalCorrectlyClassified = 0
+    superTotalClassified = 0
+    for classLabel in classLabels:
+        numCorrectlyClassified = confusionMatrix.loc[classLabel, classLabel]
+        totalCorrectlyClassified += numCorrectlyClassified
+        totalClassified = totals.loc[totalLabel, classLabel]
+        superTotalClassified += totalClassified
+        totals.loc[accuracyLabel, classLabel] = str(round((numCorrectlyClassified / totalClassified) * 100, outputPrecision)) + '%'
+
+    # Report the following:
+    #     coefficient of determination (AKA R^2)
+    print("\nR² = {}%\n".format(round(rSq * 100, outputPrecision)))
+
+    #     number of records in each class and accuracy of class assignment
+    print(totals)
+    
+    #     overall accuracy
+    print("\nOverall Accuracy: {}%".format(round(((totalCorrectlyClassified / superTotalClassified) * 100), outputPrecision)))
+
+    #     3-way confusion matrix as shown below
+    print("\nConfusion Matrix")
+    print('-'*20)
+    print(confusionMatrix)
+    print('-'*20)
+    print("Row: assigned class")
+    print("Col: actual class")
+
+# in class 1 assigned class 1	# in class 2 assigned class 1 	 # in class 6 assigned class 1 
+# in class 1 assigned class 2 	# in class 2 assigned class 2 	 # in class 6 assigned class 2 
+# in class 1 assigned class 6	# in class 2 assigned class 6 	 # in class 6 assigned class 6
+ 
+    return rSq, s

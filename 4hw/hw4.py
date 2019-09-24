@@ -11,37 +11,17 @@
 
 from PerceptronClassification import perceptronClassification as pc
 
-dataPath = 'data/glass data short.csv'
-target = 'Rating'
+dataPath = 'data/glassDataWithHeader.csv'
+inputColumns = list(range(0,9))
+classColumn = 9
 precision = 2
 emptyMethods = ['zero', 'drop']
 
-# Write a code for regression of nutritional rating vs sugar and fiber. 
-# Train with example from Cereals dataset on class web page
-# Report bias and slopes for predictors sugar and fiber,
-# coefficient of determination, R2, and standard error of estimation, s.
+rSq, s = pc(dataPath, inputColumns, classColumn, 
+    normalizeInputs=False,
+    emptyCellHandling='drop', 
+    outputPrecision=precision)
 
-# Consider protein, fat, and sodium separately as a third attribute, 
-# in addition to sugar and fiber, to predict the nutritional rating cereals.
-# Report the change in R2 and s relative to sugar and fiber only.
-
-thirdAttributes = ['Protein', 'Fat', 'Sodium']
-
-for emptyMethod in emptyMethods:
-    predictors = ['Sugars', 'Fiber']
-    baseR2, baseS = linReg(target, predictors, dataPath, 
-        emptyCellHandling=emptyMethod, outputPrecision=precision)
-    print("R² = {}%".format(round(baseR2 * 100, precision)))
-    print("s = {}".format(round(baseS, precision)))
-    print('_'*43 + '\n')
-    
-    for thirdAttribute in thirdAttributes:
-        predictors = ['Sugars', 'Fiber']
-        predictors.append(thirdAttribute)
-        r2, s = linReg(target, predictors, dataPath, 
-            emptyCellHandling=emptyMethod, outputPrecision=precision)
-        print("R² = {0}% Δ({1:+}%)".format(round(r2 * 100, precision), round((r2 - baseR2)*100, precision)))
-        print("s = {0} Δ({1:+})".format(round(s, precision), round(s - baseS, precision)))
-        print('_'*43 + '\n')
-
-    print('\n' + '#'*43 + '\n')
+# print('\n')
+# print("R² = {}%".format(round(rSq * 100, precision)))
+# print("s = {}".format(round(s, precision)))

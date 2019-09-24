@@ -1,0 +1,19 @@
+Warning: Not normalizing inputs
+
+R² = 83.31%
+
+               1      2      6
+Total         69     76     29
+Accuracy  62.32%  75.0%  93.1%
+
+Overall Accuracy: 72.99%
+
+Confusion Matrix
+--------------------
+    1   2   6
+1  43  19   0
+2  26  57   2
+6   0   0  27
+--------------------
+Row: assigned class
+Col: actual class
