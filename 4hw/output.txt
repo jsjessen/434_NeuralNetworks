@@ -1,3 +1,9 @@
+James Jessen
+10918967
+CptS 434 - Assignment #4
+
+Note: Input has not been normalized because of the precedent set by the first assignment.
+
 R² = 83.31%
 
                1      2      6
