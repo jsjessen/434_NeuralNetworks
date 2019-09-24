@@ -1,0 +1,55 @@
+Assignment 4: due 10-1-19
+Classification by Perceptron Regression
+=======================================
+
+Use dataset randomized shortened 'glass data short.csv' to 
+develop a classifier for beer-bottle glass by perceptron regression.  
+
+Keep the class labels as 1, 2, and 6
+
+After fitting class labels as though they are a continuous response, 
+bin the results to make predictions of class assignment.  
+
+| Fit<1.5  bin=1 | Fit>4  bin=6 | Default bin=2 |
+
+Report the following:
+	coefficient of determination (AKA R^2)
+	number of records in each class and accuracy of class assignment
+	overall accuracy
+	3-way confusion matrix as shown below
+
+# in class 1 assigned class 1	# in class 2 assigned class 1 	 # in class 6 assigned class 1 
+# in class 1 assigned class 2 	# in class 2 assigned class 2 	 # in class 6 assigned class 2 
+# in class 1 assigned class 6	# in class 2 assigned class 6 	 # in class 6 assigned class 6
+
+
+Classification by regression
+----------------------------
+Setup perceptron regression as though brewery number (column 11) is a continuous response.
+Solve normal equations for optimum weight vector.
+Bin yfit to predict class assignment for examples in dataset.
+Use predicted class and true class to calculate a confusion matrix.
+(See slides 11-13 for MATLAB code)
+
+Column Labels
+-------------
+1. Sample index (not included in 'glass data short.csv') 	
+2. RI: refractive index
+3. Na: Sodium
+4. Mg: Magnesium
+5. Al: Aluminum
+6. Si: Silicon
+7. K: Potassium
+8. Ca: Calcium
+9. Ba: Barium
+10. Fe: Iron
+11. Type of bottle (class)
+
+Enumerated Classes
+------------------
+1=Anheuser-Busch, Inc.
+2=Miller Brewing Co.
+3=Blitz-Weinhard Brewing Co.
+4=Pete’s Brewing Co.
+5=Samuel Adams Brew House
+6=Plank Road Brewery
