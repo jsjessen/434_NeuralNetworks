@@ -22,6 +22,6 @@ Confusion Matrix
 Row: assigned class
 Col: actual class
 
-When checking my work, I noticed that there is a descrepency between 
+When checking my work, I noticed that there is a discrepancy between 
 "glass data short.csv" and "Classify by perceptron regression.pptx" slide 9.
 There are 69 instances of class 1 in the data file, not the expected 70.
