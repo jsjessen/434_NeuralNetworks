@@ -1,6 +1,6 @@
-.vscode\
-bash.exe.stackdump
+.*/
+__*__/
 ~*
+bash.exe.stackdump
 .tmp
 .code-workspace
-__pycache__\
