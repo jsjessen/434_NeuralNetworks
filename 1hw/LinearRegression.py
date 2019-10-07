@@ -39,16 +39,16 @@ def linearRegression(target, predictors, dataPath,
     numRows = len(data.index)
     numPredictors = len(predictors)
 
-    dataNorm = (data - data.min()) / (data.max() - data.min())
+    # dataNorm = (data - data.min()) / (data.max() - data.min())
 
     # [[ 1 Sugars0 Fiber0 ]
     #  [ 1 Sugars1 Fiber1 ]
     #          ...
     #  [ 1 SugarsN FiberN ]]
     X = np.ones((numRows, 1 + numPredictors)) # First column ones for bias node
-    X[:,1:] = dataNorm[predictors].values
+    X[:,1:] = data[predictors].values
 
-    y = dataNorm[target].values
+    y = data[target].values
 
     # Solve the normal equation
     w = np.linalg.solve(X.T.dot(X), X.T.dot(y))
