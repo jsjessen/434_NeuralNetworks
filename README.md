@@ -9,4 +9,4 @@ Instructor: John Miller
 5. Perceptron Classifier-Controller
 6. ???
 7. ???
-8.Logistic Regression
+8. Logistic Regression
