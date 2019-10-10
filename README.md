@@ -7,6 +7,5 @@ Instructor: John Miller
 3. WEKA - Bayes
 4. Perceptron Classification
 5. Perceptron Classifier-Controller
-6. ???
-7. ???
-8. Logistic Regression
+6. Logistic Regression
+7. Extending Linear Models By Features
