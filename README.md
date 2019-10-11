@@ -2,10 +2,11 @@
 Semester: Fall 2019\
 Instructor: John Miller
 
-1. Perceptron Regression
+1. Coding - Perceptron Regression
 2. WEKA - KNN & ZeroR
 3. WEKA - Bayes
-4. Perceptron Classification
-5. Perceptron Classifier-Controller
+4. Coding - Perceptron Classification
+5. Math - Perceptron Classifier-Controller
 6. WEKA - Logistic Regression
-7. Extending Linear Models By Features
+7. Math - Extending Linear Models By Features
+
