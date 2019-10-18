@@ -19,6 +19,9 @@ def perceptronClassification(dataPath, inputColumns, classColumn):
     # DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
     data = pd.read_csv(dataPath, usecols=columns)
 
+    data.loc['actual']
+    data.loc['predicted']
+
     numInputs = len(inputColumns)
     numRows = len(data.index)
 
