@@ -9,4 +9,4 @@ Instructor: John Miller
 5. Math - Perceptron Classifier-Controller
 6. WEKA - Logistic Regression
 7. Math - Extending Linear Models By Features
-
+8. WEKA/Coding - Radial Basis Function (RBF) Network
