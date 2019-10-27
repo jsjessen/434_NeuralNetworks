@@ -1,0 +1,8 @@
+Assignment 10: due 11-12-19
+
+Calculate principal components of attributes in glass data short.csv
+(Do not include the 10th column, which class labels)
+
+Report the eigenvalues ranked by decreasing magnitude. 
+
+Calculate PoV for all eigenvalues and plot.

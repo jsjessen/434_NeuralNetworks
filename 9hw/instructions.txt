@@ -1,0 +1,25 @@
+Assignment 9: due 11-5-19
+
+Part 1
+------
+Apply Weka’s Genetic Search in version 3.8 to find the best subset of attributes after 100 generations in the breast-cancer data on the class webpage when Naïve Bayes is used classify benign and malignant cases. 
+
+Report fitness for chromosomes in the 100th generation and 
+Weka’s list of the best tumor characteristics for classification. 
+
+Report the accuracy of classification and confusion matrix 
+when these tumor characteristics are used to classify the breast-cancer data.
+
+
+Part 2
+------
+Apply Weka’s InfoGain in version 3.8 to the rank leukemia gene expression dataset from HW1 by information gained. 
+
+Report the top 5 genes. 
+
+Use these 5 genes with Naïve Bayes to classify ALL and AML among cases in the dataset. 
+
+Compare the accuracy using the top 5 genes to the accuracy using all the genes. 
+
+Report the confusion matrix (ALL positive class) using the top 5 genes and 
+compare to confusion matrix when all genes are used for Naïve Bayes classification.

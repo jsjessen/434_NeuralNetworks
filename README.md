@@ -10,3 +10,5 @@ Instructor: John Miller
 6. WEKA - Logistic Regression
 7. Math - Extending Linear Models By Features
 8. WEKA/Coding - Radial Basis Function (RBF) Network
+9. WEKA - Genetic Algorithms
+10. Math - Dimensionality Reduction
