@@ -1,8 +1,22 @@
 Assignment 10: due 11-12-19
 
 Calculate principal components of attributes in glass data short.csv
-(Do not include the 10th column, which class labels)
+(Do not include the 10th column, which is class labels)
 
 Report the eigenvalues ranked by decreasing magnitude. 
 
 Calculate PoV for all eigenvalues and plot.
+
+
+z=csvread(‘datafile.csv’);
+sig=cov(z);
+[V,D]=eig(sig)
+%columns of V are the eigenvectors
+%D is diagonal
+%eigenvalues on diagonal are in increasing order
+%invert order and store in array eigenvals
+d = length(eigenvals)
+for k=1:d
+pov(k) = <pic>
+plot(pov)
+%index of pov array will be used as x coordinate
