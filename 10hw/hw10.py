@@ -23,7 +23,7 @@ inputColumns = list(range(0,9))
 plotData = dr(dataPath, inputColumns)
 
 # Report the eigenvalues ranked by decreasing magnitude.
-# plotData.to_csv(r'C:\Users\James\Documents\hw10-output.csv', index=False, header=True)
+# plotData.to_csv(r'10hw\output.csv', index=False, header=True)
 print(plotData)
 
 width = 0.5
