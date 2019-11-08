@@ -17,6 +17,6 @@ sig=cov(z);
 %invert order and store in array eigenvals
 d = length(eigenvals)
 for k=1:d
-pov(k) = <pic>
+pov(k) = (Eig_1 + Eig_2 + ... + Eig_k) / (Eig_1 + Eig_2 + ... + Eig_k + ... + Eig_d)
 plot(pov)
 %index of pov array will be used as x coordinate

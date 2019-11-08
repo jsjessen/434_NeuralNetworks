@@ -14,34 +14,19 @@ def dimensionalityReduction(dataPath, inputColumns):
     # DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
     data = pd.read_csv(dataPath, usecols=inputColumns)
 
-    # numInputs = len(inputColumns)
-    # numRows = len(data.index)
+    # Each column represents a variable, while the rows contain observations.
+    covarianceMatrix = np.cov(data, rowvar=False)
+    eigenvalues = np.linalg.eigvals(covarianceMatrix)
 
-    sig = np.cov(data)
-    w, v = np.linalg.eig(sig)
+    # Sort eigenvalues largest to smallest (descending order)
+    eigenvalues[::-1].sort()
 
-    print(sig)
-    print('-'*42)
-    print(w)
-    print('-'*42)
-    print(v)
+    proportionVariance = []
+    runningTotal = 0
+    total = np.sum(eigenvalues)
+    for eigVal in eigenvalues:
+        runningTotal += eigVal
+        proportionVariance.append(runningTotal / total)
+    #   pov(k) = (Eig_1 + Eig_2 + ... + Eig_k) / (Eig_1 + Eig_2 + ... + Eig_k + ... + Eig_d)
 
-    # %columns of V are the eigenvectors
-    # %D is diagonal
-    # %eigenvalues on diagonal are in increasing order
-    # %invert order and store in array eigenvals
-    # d = length(eigenvals)
-    # for k=1:d
-    # pov(k) = <pic>
-    # plot(pov)
-    # %index of pov array will be used as x coordinate
-
-
-    # Calculate principal components of attributes in glass data short.csv
-    # (Do not include the 10th column, which is class labels)
-
-    # Report the eigenvalues ranked by decreasing magnitude. 
-
-    # Calculate PoV for all eigenvalues and plot.
-
-    return
+    return eigenvalues, proportionVariance
