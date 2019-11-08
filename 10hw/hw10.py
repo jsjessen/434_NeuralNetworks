@@ -15,38 +15,40 @@ import matplotlib.pyplot as plt
 from DimensionalityReduction import dimensionalityReduction as dr
 
 dataPath = 'data/glassDataWithHeader.csv'
+
+# (Do not include the 10th column, which is class labels)
 inputColumns = list(range(0,9))
 
-    # Calculate principal components of attributes in glass data short.csv
-    # (Do not include the 10th column, which is class labels)
+# Calculate principal components of attributes in glass data short.csv
+plotData = dr(dataPath, inputColumns)
 
-    # Report the eigenvalues ranked by decreasing magnitude. 
+# Report the eigenvalues ranked by decreasing magnitude.
+# plotData.to_csv(r'C:\Users\James\Documents\hw10-output.csv', index=False, header=True)
+print(plotData)
 
-    # Calculate PoV for all eigenvalues and plot.
+width = 0.5
 
-eigenvalues, proportionVariance = dr(dataPath, inputColumns)
-
-eigValLabel = 'Ranked Eigenvalues'
-print(eigValLabel)
-print('-'*len(eigValLabel))
-sumEigVals = np.sum(eigenvalues)
-for i, eigVal in enumerate(eigenvalues):
-    percent = (eigVal / sumEigVals) * 100
-    print('{}) {} ({}%)'.format(i+1, round(eigVal, 4), round(percent, 2)))
-
-# Recreate slide 14 plot
-d = np.size(proportionVariance)
-y_pos = np.arange(d)
-plt.bar(y_pos, proportionVariance, align='center', alpha=0.5)
-plt.xticks(y_pos, range(1, d+1))
-plt.xlabel('Principal Component')
-plt.ylabel('Variance Explained (%)')
+fig, ax1 = plt.subplots()
 plt.title('Proportion of Variance')
+
+color = 'tab:blue'
+ax1.set_xlabel('Principal Component')
+ax1.set_ylabel('Variance Explained (%)', color=color)
+ax1.set_ylim(0, 100)
+ax1.tick_params(axis='y', labelcolor=color)
+
+color = 'tab:red'
+ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+ax2.set_ylabel('Variance Captured (%)', color=color)
+ax2.set_ylim(0, 100)
+ax2.tick_params(axis='y', labelcolor=color)
+
+plotData['Variance Explained'].plot(ax=ax1, style='r-', kind='bar', width=width)
+plotData['Proportion of Variance'].plot(ax=ax2, style='r-', secondary_y='Variance Captured (%)')
+ax1.set_xticks(plotData.index)
+ax1.set_xticklabels(plotData['Principal Component'], rotation=0)
+
+plt.xlim(-width, len(plotData.index) - width)
+fig.tight_layout()  # otherwise the right y-label is slightly clipped
+
 plt.show()
-
-# m1_t[['abnormal','fix','normal']].plot(kind='bar', width = width)
-# m1_t['bad_rate'].plot(secondary_y=True)
-
-# ax = plt.gca()
-# plt.xlim([-width, len(m1_t['normal'])-width])
-# ax.set_xticklabels(('G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10'))

@@ -12,21 +12,34 @@ def dimensionalityReduction(dataPath, inputColumns):
     # Read data from file
     # Read CSV:  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
     # DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
-    data = pd.read_csv(dataPath, usecols=inputColumns)
+    inputData = pd.read_csv(dataPath, usecols=inputColumns)
 
     # Each column represents a variable, while the rows contain observations.
-    covarianceMatrix = np.cov(data, rowvar=False)
+    covarianceMatrix = np.cov(inputData, rowvar=False)
+
+    # If we arrange the eigenvectors in W so that their 
+    # eigenvalues λ1...λd are in decreasing order of magnitude, 
+    # then the components of z, z = wx, 
+    # are called “principle components” (PCs). 
     eigenvalues = np.linalg.eigvals(covarianceMatrix)
 
     # Sort eigenvalues largest to smallest (descending order)
     eigenvalues[::-1].sort()
 
-    proportionVariance = []
+    varianceExplained = []
+    proportionVariances = []
     runningTotal = 0
     total = np.sum(eigenvalues)
     for eigVal in eigenvalues:
         runningTotal += eigVal
-        proportionVariance.append(runningTotal / total)
+        varianceExplained.append((eigVal / total) * 100)
+        proportionVariances.append((runningTotal / total) * 100)
     #   pov(k) = (Eig_1 + Eig_2 + ... + Eig_k) / (Eig_1 + Eig_2 + ... + Eig_k + ... + Eig_d)
 
-    return eigenvalues, proportionVariance
+    outputData = pd.DataFrame()
+    outputData['Principal Component'] = list(range(1, len(eigenvalues)+1))
+    outputData['Eigenvalues'] = eigenvalues
+    outputData['Variance Explained'] = varianceExplained
+    outputData['Proportion of Variance'] = proportionVariances
+
+    return outputData
