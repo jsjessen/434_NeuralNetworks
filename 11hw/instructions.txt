@@ -1,0 +1,100 @@
+Assignment 11
+Due: 11-19-19
+=============
+
+Implement online training for regression on the class labels of the XOR dataset.
+
+    XOR
+    =========
+    x1	x2	r
+    ---------
+    0	0	0
+    0	1	1
+    1	0	1
+    1	1	0
+
+    for x1 in range(0, 1):
+        for x2 in range(0, 1):
+            xorData.append([x1, x2, xor(x1, x2)])
+
+    def xor(a, b):
+        return bool(a) != bool(b)
+
+Use a multilayer perceptron (MLP) with one hidden layer 
+containing 3 nodes: bias, z1 and z2
+Input layer contains 3 nodes x0=1 plus x1 and x2 for dataset.
+
+    x0  x1	x2              bias    z1      z2
+    ----------              ------------------
+    1   0	0               ?       ?       ?
+    1   0	1       =>      ?       ?       ?
+    1   1	0               ?       ?       ?
+    1   1	1               ?       ?       ?
+
+Transform the hidden nodes by sigmoid(wTx)=1/(1+exp(-wTx))
+
+    sigmoid(w.T.dot(x))
+    def sigmoid(x):
+        return 1 / (1 + math.exp(-x))
+
+Initial weights
+---------------
+w1 = [-0.5,  1,  -1] 
+w2 = [-0.5, -1,   1]
+ v = [24,  -20, -20]
+
+learningRate = 0.001
+
+No momentum parameter
+
+Perform 1000 iterations with the example chosen randomly from the dataset.
+
+    iterations = 1000
+
+    exampleIndex = random.randrange(4)
+    example = xorData[exampleIndex]
+
+After each weight update, 
+
+    z = sigmoid(w.T.dot(x))
+    y = sum((v * z) + v_0)  # example code doesn't add v_0
+
+    changeV = learningRate * (r - y) * z
+    changeW = learningRate * (r - y) * v * z * (1 - z) * x
+
+calculate the sum of squared residuals 
+and save for plot of convergence.
+
+    SSR = sum((actual - predicted)**2)
+
+    ssrDiff = fits - yAvg
+    SSR = np.sum(ssrDiff.dot(ssrDiff))
+
+In addition to convergence plot, 
+report the final weight vectors and predicted y value for each example.
+
+With the final weights connecting input to hidden layer, 
+calculate z1 and z2 for each example
+and display on a z2 vs z1 plot.
+
+
+extending linear models by features.pptx
+----------------------------------------
+60-68: Relevant
+69-70: Assignment
+71-72: Tips
+73: Rough expected output
+
+Oct 15 Lecture
+--------------
+    1:10:00
+    Discusses initial version of the assignment.
+
+    1:15:00
+    Change both v and w on the same pass.
+    Do not update v and then use that value to update w.
+
+Oct 17 Lecture
+--------------
+    26:40 - 34:20
+    Updated discussion of assignment
