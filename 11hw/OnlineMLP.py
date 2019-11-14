@@ -19,11 +19,12 @@ def sigmoid(x):
 
 # Use a multilayer perceptron (MLP) with one hidden layer.
 # Implement online training by non-linear regression.
-def onlineMLP(dataset,
-              inputWeights, 
-              hiddenWeights, 
-              learningRate,
-              numIterations):
+def onlineMLP(
+    dataset,
+    inputWeights, 
+    hiddenWeights, 
+    learningRate,
+    numIterations):
 
     # Input layer contains 3 nodes: bias=x0=1, x1, x2
     #
@@ -56,7 +57,6 @@ def onlineMLP(dataset,
 
     # Perform 1000 iterations with the example chosen randomly from the dataset.
     Error = np.zeros(numIterations)
-    squares = 0
     for iteration in range(0, numIterations):
         randomIndex = random.randrange(numRows)
         X = inputData[randomIndex]
@@ -69,65 +69,56 @@ def onlineMLP(dataset,
         
         y = V.dot(Z)
 
-        # Before each weight update, calculate the sum of squared residuals. 
-        squares += math.pow(r - y, 2)
-        Error[iteration] = squares / (iteration + 1)
-
         # Backpropagation
         c = learningRate * (r - y)
-        changeV = c * Z
-        changeW = np.zeros(wShape)
+        vChange = c * Z
+        wChange = np.zeros(wShape)
         for h in range(0 + 1, wRows + 1):
-            changeW[h-1] = X.dot(c * V[h] * Z[h] * (1 - Z[h]))
-        V = np.add(V, changeV)
-        W = np.add(W, changeW)
+            wChange[h-1] = X.dot(c * V[h] * Z[h] * (1 - Z[h]))
 
+        # Before each weight update, calculate the sum of squared residuals. 
+        SSR = 0
+        for X, r in zip(inputData, outputData):
+            for h in range(0, wRows):
+                Z[h+1] = sigmoid(X.dot(W[h]))
+            y = V.dot(Z)
+            SSR += math.pow(r - y, 2)
+        Error[iteration] = SSR
+
+        # Weight Update
+        V = np.add(V, vChange)
+        W = np.add(W, wChange)
+
+    # Report the final weight vectors and predicted y value for each example.
     print('Final weights connecting input to hidden layer:')
     print(W)
     print('\n')
-
     print('Final weights connecting hidden layer to output:')
     print(V)
     print('\n')
-
-
     my_df = []
     for X, r in zip(inputData, outputData):
-        # Transform the hidden nodes by sigmoid(wTx)
         for h in range(0, wRows):
-            # Skip the bias node z[0]
             Z[h+1] = sigmoid(X.dot(W[h]))
-        
         y = V.dot(Z)
         print("{} XOR {} = {} | y = {}".format(int(X[1]), int(X[2]), r, round(y,2)))
+
+        # With the final weights, calculate and 
+        # report the values z1 and z2 for each example in the dataset.
         d = { 'z1': Z[1], 'z2': Z[2] }
         my_df.append(d)
 
     Z = pd.DataFrame(my_df)
     print('\n')
     print(Z)
+    print('\n')
 
     sum1 = np.sum(Z.iloc[0])
     sum2 = np.sum(Z.iloc[1])
     decisionBoundary = np.mean([sum1, sum2])
-    margin = sum1 - decisionBoundary
+    margin = abs(sum1 - decisionBoundary)
 
     print('Decision Boundary = {}'.format(round(decisionBoundary, 3)))
     print('Margin = {}'.format(round(margin, 3)))
-
-
-
-    # Create semilog plot of convergence.
-
-    # Report the final weight vectors and predicted y value for each example.
-
-    # With the final weights, calculate and report the values z1 and z2
-    # for each example in the dataset.
-
-    # Use the values z1 and z2 associated with examples (0,0) and
-    # (0,1) to calculate the bias of a decision boundary with equal
-    # margins for the 2 classes. Report the margins and include a
-    # plot of feature space with the decision boundary and location of
-    # features associated with examples in the dataset.
 
     return Error, Z, decisionBoundary

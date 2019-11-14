@@ -7,12 +7,12 @@
 # Python Tutorial:      https://docs.python.org/3.7/tutorial/index.html
 # Python Documentation: https://docs.python.org/3.7/index.html
 
-# python 11hw/hw11.py
+# python 11hw/hw11.py > 11hw/output.txt
 
-from OnlineMLP import onlineMLP as mlp
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from OnlineMLP import onlineMLP as mlp
 
 #      XOR
 #   =========
@@ -54,20 +54,17 @@ learningRate = 0.001
 # Perform 1000 iterations
 numIterations = 1000
 
-Error, Z, decisionBoundary = mlp(xorDataset,
-                     initial_inputWeights, 
-                     initial_hiddenWeights, 
-                     learningRate, 
-                     numIterations)
+Error, Z, decisionBoundary = mlp(
+    xorDataset,
+    initial_inputWeights, 
+    initial_hiddenWeights, 
+    learningRate, 
+    numIterations)
 
-margin = 0.05
 
 # Create semilog plot of convergence.
 plt.semilogy(Error)
 plt.title('Convergence')
-yMax = np.max(Error)
-yMax += yMax * margin
-plt.ylim([0, yMax])
 plt.xlabel('Iteration')
 plt.ylabel('Error (SSR)')
 plt.show()
@@ -86,16 +83,18 @@ plt.show()
 plt.scatter(Z['z2'], Z['z1'])
 z1 = [0, decisionBoundary]
 z2 = [decisionBoundary, 0]
-plt.plot(z1, z2, '--r', label='z1 + z2 = {}'.format(round(decisionBoundary, 3)))
+plt.plot(z1, z2, '--r', label='z1 + z2 = {}\nmargin = {}'.format(round(decisionBoundary, 3), 0.019))
+
+plotMargin = 0.05
 
 xlim = [np.min(Z['z1']), np.max(Z['z1'])]
-xMargin = np.mean(xlim) * margin
+xMargin = np.mean(xlim) * plotMargin
 xlim[0] -= xMargin
 xlim[1] += xMargin
 plt.xlim(xlim)
 
 ylim = [np.min(Z['z2']), np.max(Z['z2'])]
-yMargin = np.mean(ylim) * margin
+yMargin = np.mean(ylim) * plotMargin
 ylim[0] -= yMargin
 ylim[1] += yMargin
 plt.ylim(ylim)
