@@ -65,17 +65,23 @@ After each weight update,
 calculate the sum of squared residuals 
 and save for plot of convergence.
 
-    SSR = sum((actual - predicted)**2)
+    SSR = sum(math.pow(actual - predicted, 2))
 
     ssrDiff = fits - yAvg
     SSR = np.sum(ssrDiff.dot(ssrDiff))
 
-In addition to convergence plot, 
-report the final weight vectors and predicted y value for each example.
+Create semilog plot of convergence.
 
-With the final weights connecting input to hidden layer, 
-calculate z1 and z2 for each example
-and display on a z2 vs z1 plot.
+Report the final weight vectors and predicted y value for each example.
+
+With the final weights, calculate and report the values z1 and z2
+for each example in the dataset.
+
+Use the values z1 and z2 associated with examples (0,0) and
+(0,1) to calculate the bias of a decision boundary with equal
+margins for the 2 classes. Report the margins and include a
+plot of feature space with the decision boundary and location of
+features associated with examples in the dataset.
 
 
 extending linear models by features.pptx
@@ -98,3 +104,16 @@ Oct 17 Lecture
 --------------
     26:40 - 34:20
     Updated discussion of assignment
+
+Nov 12 Lecture
+--------------
+    12:30
+    Talks about his difficulty coding it.
+    Mad it extra credit due the last lecture.
+    Gives tips for implementing backpropagation weight update rule.
+        Suggests using an explicit bias because it makes indexing easier.
+        As opposed to making the bias the first element of aS vector.
+
+    13:50
+    Shows slide 69 from "extending linear models by features.pptx" 
+    that hasn't been updated on class website yet.
