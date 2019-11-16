@@ -27,9 +27,8 @@ def xor(a, b):
         raise ValueError("XOR inputs must be 0 or 1")
     return bool(a) != bool(b)
 
-xorDataset = []  
-
 # Populate XOR dataset
+xorDataset = []
 falseTrue = [0, 1]
 for x1 in falseTrue:
     for x2 in falseTrue:
@@ -60,7 +59,6 @@ Error, Z, decisionBoundary = mlp(
     initial_hiddenWeights, 
     learningRate, 
     numIterations)
-
 
 # Create semilog plot of convergence.
 plt.semilogy(Error)

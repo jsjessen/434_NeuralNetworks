@@ -17,6 +17,13 @@ import pandas as pd
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
+# Sum of squared residuals
+def ssr(observed, predicted):
+    total = 0
+    for o, p in zip(observed, predicted):
+        total += math.pow(o - p, 2)
+    return total
+
 # Use a multilayer perceptron (MLP) with one hidden layer.
 # Implement online training by non-linear regression.
 def onlineMLP(
@@ -56,8 +63,9 @@ def onlineMLP(
     wRows, wColumns = wShape
 
     # Perform 1000 iterations with the example chosen randomly from the dataset.
-    Error = np.zeros(numIterations)
+    error = np.zeros(numIterations)
     for iteration in range(0, numIterations):
+        # Choose random example from the dataset.
         randomIndex = random.randrange(numRows)
         X = inputData[randomIndex]
         r = outputData[randomIndex]
@@ -77,13 +85,12 @@ def onlineMLP(
             wChange[h-1] = X.dot(c * V[h] * Z[h] * (1 - Z[h]))
 
         # Before each weight update, calculate the sum of squared residuals. 
-        SSR = 0
-        for X, r in zip(inputData, outputData):
+        predicted = np.zeros(numRows)
+        for i, X in enumerate(inputData):
             for h in range(0, wRows):
                 Z[h+1] = sigmoid(X.dot(W[h]))
-            y = V.dot(Z)
-            SSR += math.pow(r - y, 2)
-        Error[iteration] = SSR
+            predicted[i] = V.dot(Z)
+        error[iteration] = ssr(outputData, predicted)
 
         # Weight Update
         V = np.add(V, vChange)
@@ -96,7 +103,7 @@ def onlineMLP(
     print('Final weights connecting hidden layer to output:')
     print(V)
     print('\n')
-    my_df = []
+    zList = []
     for X, r in zip(inputData, outputData):
         for h in range(0, wRows):
             Z[h+1] = sigmoid(X.dot(W[h]))
@@ -106,19 +113,19 @@ def onlineMLP(
         # With the final weights, calculate and 
         # report the values z1 and z2 for each example in the dataset.
         d = { 'z1': Z[1], 'z2': Z[2] }
-        my_df.append(d)
-
-    Z = pd.DataFrame(my_df)
+        zList.append(d)
+    Z = pd.DataFrame(zList)
     print('\n')
     print(Z)
     print('\n')
 
+    # Assuming w = [1 1]
     sum1 = np.sum(Z.iloc[0])
     sum2 = np.sum(Z.iloc[1])
     decisionBoundary = np.mean([sum1, sum2])
     margin = abs(sum1 - decisionBoundary)
 
-    print('Decision Boundary = {}'.format(round(decisionBoundary, 3)))
-    print('Margin = {}'.format(round(margin, 3)))
+    print('Decision Boundary: z1 + z2 = {}'.format(round(decisionBoundary, 3)))
+    print('Margins = {}'.format(round(margin, 3)))
 
-    return Error, Z, decisionBoundary
+    return error, Z, decisionBoundary
